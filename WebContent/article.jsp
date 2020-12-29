@@ -13,9 +13,6 @@
 		ArrayList<Article> articles = (ArrayList<Article>) request.getAttribute("data");
 	%>
 
-	<%
-		
-	%>
 
 
 

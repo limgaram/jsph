@@ -15,7 +15,7 @@ import board.article.ArticleDao;
 import board.member.Member;
 import board.member.MemberDao;
 
-@WebServlet("/article")
+@WebServlet("/Farticle")
 public class article extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)

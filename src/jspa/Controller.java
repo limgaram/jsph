@@ -15,7 +15,7 @@ import board.article.ArticleDao;
 import board.member.Member;
 import board.member.MemberDao;
 
-@WebServlet("/Controller")
+@WebServlet("/article")
 public class Controller extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -32,10 +32,8 @@ public class Controller extends HttpServlet {
 
 		if (action.equals("list")) {
 
-			// 1. request 객체에 데이터 저장
 			request.setAttribute("myData", articles);
 
-			// 2. 위에서 저장한 request 객체를 이용해 새로운 jsp 요청 -> 목적지 jsp 필요
 		} else if (action.equals("insert")) {
 
 			String title = request.getParameter("title");
@@ -74,19 +72,38 @@ public class Controller extends HttpServlet {
 
 			dest = "WEB-INF/jsp/updateForm.jsp";
 
-		} else if (action.equals("login")) {
+		} else if (action.equals("showLogin")) {
 
-			String id = request.getParameter("id");
-			String pw = request.getParameter("pw");
-			Mdao.getMemberByLoginIdAndLoginPw(id, pw);
-			dest = "WEB-INF/jsp/login.jsp";
+			dest = "WEB-INF/jsp/loginForm.jsp";
 
-		} else if (action.equals("signup")) {
-			String id = request.getParameter("id");
-			String pw = request.getParameter("pw");
-			String name = request.getParameter("name");
-			Mdao.insertMember(id, pw, name);
-			dest = "WEB-INF/jsp/login.jsp";
+		} else if (action.equals("doLogin")) {
+
+			String loginId = request.getParameter("loginId");
+			String loginPw = request.getParameter("loginPw");
+
+			Member loginedMember = Mdao.getMemberByLoginIdAndLoginPw(loginId, loginPw);
+			request.setAttribute("memberDate", Mdao.getMemberByLoginIdAndLoginPw(loginId, loginPw));
+
+			if (loginedMember != null) {
+				dest = "WEB-INF/jsp/list.jsp";
+			} else if (loginedMember == null) {
+				dest = "WEB-INF/jsp/nLogin.jsp";
+			} else {
+				dest = "WEB-INF/jsp/loginFailed.jsp";
+			}
+
+		} else if (action.equals("showMember")) {
+			dest = "WEB-INF/jsp/memberForm.jsp";
+
+		} else if (action.equals("doInsertMember")) {
+
+			String loginId = request.getParameter("loginId");
+			String loginPw = request.getParameter("loginPw");
+			String nickname = request.getParameter("nickname");
+
+			Mdao.insertMember(loginId, loginPw, nickname);
+
+			dest = "WEB-INF/jsp/loginForm.jsp";
 		}
 
 		request.setAttribute("myData", dao.getArticles());
@@ -96,4 +113,5 @@ public class Controller extends HttpServlet {
 		rd.forward(request, response);
 
 	}
+
 }

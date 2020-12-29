@@ -15,7 +15,7 @@
 	<hr>
 	내용 : ${myData2.body}
 	<hr>
-	<a href="/web-exam1/article?action=update&id=2&title=cccc&body=dddd">수정</a>
-	<a href="/web-exam1/article?action=delete&id=2">삭제</a>
+	<a href="/board/article?action=update&id=2&title=cccc&body=dddd">수정</a>
+	<a href="/board/article?action=delete&id=2">삭제</a>
 </body>
 </html>
