@@ -13,9 +13,13 @@
 
 <body>
 
-	<a href="/board/article?action=showLogin">로그인</a>
+<c:if test = >
+${loginedMember.nickname}님 반갑습니다!
+</c:if>
+<c:if test = >
+<a href="/board/article?action=showLogin">로그인</a>
+</c:if>
 	<h2>게시물 목록</h2>
-	회원이름 : ${memberDate.nickname}
 
 	<table border="1">
 		<tr>
@@ -39,7 +43,7 @@
 
 
 	</table>
-	<a href="/board/article?action=insert&title=aaaa&body=bbbb&mid=1">글쓰기</a>
+	<a href="/board/article?action=showAdd&mid=${loginedMember.id}">글쓰기</a>
 
 
 </body>

@@ -64,6 +64,11 @@ public class Controller extends HttpServlet {
 
 			dest = "WEB-INF/jsp/addForm.jsp";
 
+		} else if (action.equals("showAdd")) {
+			int mid = Integer.parseInt(request.getParameter("mid"));
+
+			Member loginedMemeber = new Member();
+
 		} else if (action.equals("showUpdate")) {
 
 			int id = Integer.parseInt(request.getParameter("id"));
@@ -82,12 +87,10 @@ public class Controller extends HttpServlet {
 			String loginPw = request.getParameter("loginPw");
 
 			Member loginedMember = Mdao.getMemberByLoginIdAndLoginPw(loginId, loginPw);
-			request.setAttribute("memberDate", Mdao.getMemberByLoginIdAndLoginPw(loginId, loginPw));
+			request.setAttribute("loginedMember", Mdao.getMemberByLoginIdAndLoginPw(loginId, loginPw));
 
 			if (loginedMember != null) {
 				dest = "WEB-INF/jsp/list.jsp";
-			} else if (loginedMember == null) {
-				dest = "WEB-INF/jsp/nLogin.jsp";
 			} else {
 				dest = "WEB-INF/jsp/loginFailed.jsp";
 			}
