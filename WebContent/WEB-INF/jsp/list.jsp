@@ -13,11 +13,12 @@
 
 <body>
 
-<c:if test = >
+<c:if test = "${loginedMember != null}">
 ${loginedMember.nickname}님 반갑습니다!
 </c:if>
-<c:if test = >
+<c:if test = "${loginedMember == null}">
 <a href="/board/article?action=showLogin">로그인</a>
+<a href="/board/article?action=showMember">회원가입</a>
 </c:if>
 	<h2>게시물 목록</h2>
 
@@ -34,7 +35,14 @@ ${loginedMember.nickname}님 반갑습니다!
 		<c:forEach var="article" items="${myData}">
 			<tr>
 				<td>${article.id}</td>
-				<td><a href="/board/article?action=detail&id=${article.id}">${article.title}_${article.id}</a></td>
+				<c:choose>
+					<c:when test = "${loginedMember == null}">
+						<a href = "/board/article?action=showLogin">${article.title}_${article.id}</a>					
+					</c:when>
+					<c:otherwise>
+						<a href="/board/article?action=detail&id=${article.id}">${article.title}_${article.id}</a>
+					</c:otherwise>
+				</c:choose>
 				<td>${article.nickname}</td>
 				<td>${article.regDate}</td>
 				<td>${article.hit}</td>

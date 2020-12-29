@@ -14,7 +14,7 @@
 		<br>
 		내용 : <input type="text" name="body" />
 		<br>
-		<input type="hidden" name="mid" value="${loginedMember}" />
+		<input type="hidden" name="mid" value="${loginedMember.id}" />
 		<input type="hidden" name="action" value="insert" />
 		<input type="submit" />
 	</form>	
