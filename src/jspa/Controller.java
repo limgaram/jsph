@@ -9,6 +9,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import board.article.Article;
 import board.article.ArticleDao;
@@ -56,28 +57,33 @@ public class Controller extends HttpServlet {
 			dao.deleteArticle(id);
 
 		} else if (action.equals("detail")) {
-			
+
 			int id = Integer.parseInt(request.getParameter("id"));
 			Article article = dao.getArticleById(id);
-			request.setAttribute("detailDate", article);
+			request.setAttribute("detailData", article);
+			
+			
 			dest = "WEB-INF/jsp/detail.jsp";
-			
+
 		} else if (action.equals("showAdd")) {
-			
+			/*
+			 * int mid = Integer.parseInt(request.getParameter("mid")); 
+			 * Member loginedMember = Mdao.getMemberById(mid);
+			 */
+
+			/*
+			 * HttpSession session = request.getSession();
+			 * Member loginedMember = (Member)session.getAttribute("loginedMember");
+			 * request.setAttribute("loginedMember", loginedMember);
+			 */
 
 			dest = "WEB-INF/jsp/addForm.jsp";
-
-		} else if (action.equals("showAdd")) {
-			int mid = Integer.parseInt(request.getParameter("mid"));
-			Member loginedMember = Mdao.getMemberById(mid);
-			
-			request.setAttribute("loginedMember", loginedMember);
 
 		} else if (action.equals("showUpdate")) {
 
 			int id = Integer.parseInt(request.getParameter("id"));
 			Article article = dao.getArticleById(id);
-			request.setAttribute("myData3", article);
+			request.setAttribute("updateData", article);
 
 			dest = "WEB-INF/jsp/updateForm.jsp";
 
@@ -93,9 +99,13 @@ public class Controller extends HttpServlet {
 			Member loginedMember = Mdao.getMemberByLoginIdAndLoginPw(loginId, loginPw);
 
 			if (loginedMember != null) {
-				request.setAttribute("loginedMember", loginedMember);
-				
+				// session 저장소에 저장하는 법.
+				HttpSession session = request.getSession();
+				session.setAttribute("loginedMember", loginedMember);
+				// request.setAttribute("loginedMember", loginedMember);
+
 				dest = "WEB-INF/jsp/list.jsp";
+
 			} else {
 				dest = "WEB-INF/jsp/loginFailed.jsp";
 			}
