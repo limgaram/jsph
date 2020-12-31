@@ -10,12 +10,12 @@
 	<h1>게시물 수정</h1>
 
 	<form action="/board/article">
-		번호 : ${ updateData.id } <br> 
+		번호 : ${updateData.id} <br> 
 		제목 : <input type="text" name="title"
 			value="${ updateData.title }" /> <br> 
-		내용 : <input type="text" name="body" value="${ updateData.body }" /> 
+		내용 : <input type="text" name="body" value="${updateData.body}" /> 
 		<br> 
-			<input type="hidden" name="id" value="${ updateData.id }" /> 
+			<input type="hidden" name="id" value="${updateData.id}" /> 
 			<input type="hidden" name="action" value="update" /> 
 			<input type="submit" />
 	</form>
