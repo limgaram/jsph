@@ -48,11 +48,12 @@ public class ArticleController2 {
 	}
 
 	private String showUpdate(HttpServletRequest request, HttpServletResponse response) {
-		String title = request.getParameter("title");
-		String body = request.getParameter("body");
-		int id = Integer.parseInt("id");
+		int id = Integer.parseInt(request.getParameter("id"));
+		Article article = dao.getArticleById(id);
+		request.setAttribute("updateData", article);
 
-		return detail(request, response);
+		return "WEB-INF/jsp/updateForm.jsp";
+
 	}
 
 	private String detail(HttpServletRequest request, HttpServletResponse response) {
@@ -77,7 +78,7 @@ public class ArticleController2 {
 
 		dao.updateArticle(title, body, id);
 
-		return "WEB-INF/jsp/detail.jsp";
+		return detail(request, response);
 	}
 
 	private String insert(HttpServletRequest request, HttpServletResponse response) {

@@ -36,6 +36,9 @@ public class FrontController extends HttpServlet {
 		} else if (module.equals("member")) {
 			MemberController2 controller = new MemberController2();
 			dest = controller.doAction2(request, response);
+		} else if (module.equals("reply")) {
+			ReplyController controller = new ReplyController();
+			dest = controller.doAction3(request, response);
 		}
 
 		System.out.println(uri);
