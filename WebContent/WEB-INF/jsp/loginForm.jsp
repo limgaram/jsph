@@ -10,7 +10,7 @@
 <body>
 	<h1>로그인 페이지</h1>
 	<a href="/board/member?action=showMember">회원가입</a>
-	<form action="/board/article">
+	<form action="/board/member">
 	 <input type="text" name="loginId" placeholder="아이디" /> <br> 
 	 <input type="password" name ="loginPw" placeholder="비밀번호" /> <br> 
 	 <input type ="hidden" name ="action" value="doLogin" /><br>

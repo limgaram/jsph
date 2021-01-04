@@ -59,6 +59,8 @@
 		</c:otherwise>
 	</c:choose>
 	
+	검색
+	
 
 
 </body>

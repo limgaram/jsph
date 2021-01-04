@@ -1,12 +1,7 @@
-/*
 package jspa;
 
 import java.io.IOException;
 
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -14,12 +9,10 @@ import javax.servlet.http.HttpSession;
 import board.member.Member;
 import board.member.MemberDao;
 
-@WebServlet("/member")
-public class MemberController extends HttpServlet {
+public class MemberController2 {
 	MemberDao Mdao = new MemberDao();
 
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+	String doAction2(HttpServletRequest request, HttpServletResponse response) {
 
 		String action = request.getParameter("action");
 		String dest = "";
@@ -39,20 +32,19 @@ public class MemberController extends HttpServlet {
 		} else if (action.equals("doInsertMember")) {
 
 			dest = doInsertMember(request, response);
-		} else if (action.equals("error")) {
-
-			dest = "WEB-INF/jsp/loginFailed.jsp";
 		}
+		return dest;
 
 	}
 
-	private String doLogin(HttpServletRequest request, HttpServletResponse response) throws IOException {
+	private String doLogin(HttpServletRequest request, HttpServletResponse response) {
 		String loginId = request.getParameter("loginId");
 		String loginPw = request.getParameter("loginPw");
 
 		Member loginedMember = Mdao.getMemberByLoginIdAndLoginPw(loginId, loginPw);
 
-		if (loginedMember != null) { // session 저장소에 저장하는 법.
+		if (loginedMember != null) {
+			// session 저장소에 저장하는 법.
 			HttpSession session = request.getSession();
 			session.setAttribute("loginedMember", loginedMember);
 
@@ -71,8 +63,7 @@ public class MemberController extends HttpServlet {
 		String nickname = request.getParameter("nickname");
 
 		Mdao.insertMember(loginId, loginPw, nickname);
+
 		return "WEB-INF/jsp/loginForm.jsp";
 	}
-
 }
-*/
