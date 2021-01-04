@@ -13,14 +13,20 @@ public class ReplyController {
 		if (action.equals("replyInsert")) {
 			dest = replyInsert(request, response);
 		} else if (action.equals("replyUpdate")) {
+			dest = replyUpdate(request, response);
 
 		} else if (action.equals("replyDelete")) {
 
 		}
 	}
 
+	private String replyUpdate(HttpServletRequest request, HttpServletResponse response) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	private String replyInsert(HttpServletRequest request, HttpServletResponse response) {
-		
+
 		return replyInsert(request, response);
 	}
 
