@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import board.article.Article;
 import board.article.ArticleDao;
+import board.article.Reply;
 
 public class ArticleController2 {
 	ArticleDao dao = new ArticleDao();
@@ -44,6 +45,18 @@ public class ArticleController2 {
 			dest = showUpdate(request, response);
 
 		}
+//		reply
+		else if (action.equals("replyInsert")) {
+
+			dest = replyInsert(request, response);
+
+		} else if (action.equals("replyUpdate")) {
+
+			dest = replyUpdate(request, response);
+
+		} else if (action.equals("replyDelete")) {
+
+		}
 		return dest;
 	}
 
@@ -59,8 +72,12 @@ public class ArticleController2 {
 	private String detail(HttpServletRequest request, HttpServletResponse response) {
 		int id = Integer.parseInt(request.getParameter("id"));
 		Article article = dao.getArticleById(id);
+		ArrayList<Reply> replies = dao.getRepliesByArticleId(id);
+		
+		
 		request.setAttribute("detailData", article);
-
+		request.setAttribute("replyData", replies);
+		
 		return "WEB-INF/jsp/detail.jsp";
 	}
 
@@ -96,5 +113,20 @@ public class ArticleController2 {
 		request.setAttribute("myData", articles);
 
 		return "WEB-INF/jsp/list.jsp";
+	}
+
+//	reply
+
+	private String replyUpdate(HttpServletRequest request, HttpServletResponse response) {
+
+		return null;
+	}
+
+	private String replyInsert(HttpServletRequest request, HttpServletResponse response) {
+		int aid = Integer.parseInt(request.getParameter("aid"));
+		String body = request.getParameter("body");
+		dao.insertReply(aid, body);
+
+		return "WEB-INF/jsp/detail.jsp";
 	}
 }

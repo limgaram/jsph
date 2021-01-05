@@ -46,7 +46,7 @@ public class ArticleDao {
 	}
 
 	public ArrayList<Reply> getRepliesByArticleId(int id) {
-		String sql = "select * from reply where aid = ?";
+		String sql = "select * from reply r inner join `member` m on r.mid = m.id where m.id = ?";
 		return db.getRows(sql, new ReplyRowMapper(), id);
 	}
 

@@ -35,18 +35,19 @@ public class FrontController extends HttpServlet {
 
 		} else if (module.equals("member")) {
 			MemberController2 controller = new MemberController2();
-			dest = controller.doAction2(request, response);
+			dest = controller.doAction(request, response);
 		} else if (module.equals("reply")) {
-			ReplyController controller = new ReplyController();
-			dest = controller.doAction3(request, response);
+			ArticleController2 controller = new ArticleController2();
+			dest = controller.doAction(request, response);
 		}
-
-		System.out.println(uri);
+		
+		
+		System.out.println(dest);
 
 		if (dest.startsWith("redirect: ")) {
 
 			// redirecting
-			String[] bits = dest.split("");
+			String[] bits = dest.split(" ");
 			String url = bits[1];
 			response.sendRedirect(url);
 

@@ -12,7 +12,7 @@ import board.member.MemberDao;
 public class MemberController2 {
 	MemberDao Mdao = new MemberDao();
 
-	String doAction2(HttpServletRequest request, HttpServletResponse response) {
+	public String doAction(HttpServletRequest request, HttpServletResponse response) {
 
 		String action = request.getParameter("action");
 		String dest = "";
@@ -44,6 +44,7 @@ public class MemberController2 {
 		Member loginedMember = Mdao.getMemberByLoginIdAndLoginPw(loginId, loginPw);
 
 		if (loginedMember != null) {
+			System.out.println("111");
 			// session 저장소에 저장하는 법.
 			HttpSession session = request.getSession();
 			session.setAttribute("loginedMember", loginedMember);
@@ -52,6 +53,7 @@ public class MemberController2 {
 			return "redirect: /board/article?action=list";
 
 		} else {
+			System.out.println("222");
 			return "WEB-INF/jsp/loginFailed.jsp";
 		}
 

@@ -279,7 +279,7 @@ public class App {
 		System.out.println("==== 댓글 ====");
 		for (int i = 0; i < replies.size(); i++) {
 			System.out.println("내용 : " + replies.get(i).getBody());
-			System.out.println("작성자 : " + replies.get(i).getWriter());
+			System.out.println("작성자 : " + replies.get(i).getnickname());
 			System.out.println("=============================");
 		}
 
