@@ -46,16 +46,18 @@ public class ArticleController2 {
 
 		}
 //		reply
-		else if (action.equals("replyInsert")) {
+		else if (action.equals("doInsertReply")) {
 
-			dest = replyInsert(request, response);
+			dest = insertReply(request, response);
 
-		} else if (action.equals("replyUpdate")) {
+		} else if (action.equals("showReplyUpdate")) {
 
-			dest = replyUpdate(request, response);
+			dest = showReplyUpdate(request, response);
 
 		} else if (action.equals("replyDelete")) {
-
+			dest = replyDelete(request, response);
+		} else if (action.equals("doUpdateReply")) {
+			dest = updateReply(request, response);
 		}
 		return dest;
 	}
@@ -71,13 +73,21 @@ public class ArticleController2 {
 
 	private String detail(HttpServletRequest request, HttpServletResponse response) {
 		int id = Integer.parseInt(request.getParameter("id"));
+		String flag = request.getParameter("flag");
+
 		Article article = dao.getArticleById(id);
 		ArrayList<Reply> replies = dao.getRepliesByArticleId(id);
-		
-		
+
+		if (flag != null) {
+			int rid = Integer.parseInt(request.getParameter("rid"));
+
+			request.setAttribute("flag", flag);
+			request.setAttribute("rid", rid);
+		}
+
 		request.setAttribute("detailData", article);
 		request.setAttribute("replyData", replies);
-		
+
 		return "WEB-INF/jsp/detail.jsp";
 	}
 
@@ -116,16 +126,37 @@ public class ArticleController2 {
 	}
 
 //	reply
+	private String updateReply(HttpServletRequest request, HttpServletResponse response) {
+		int aid = Integer.parseInt(request.getParameter("aid"));
+		int rid = Integer.parseInt(request.getParameter("rid"));
+		String body = request.getParameter("rbody");
 
-	private String replyUpdate(HttpServletRequest request, HttpServletResponse response) {
+		dao.updateReply(body, rid);
 
-		return null;
+		return "redirect: /board/article?action=detail&id=" + aid;
 	}
 
-	private String replyInsert(HttpServletRequest request, HttpServletResponse response) {
+	private String replyDelete(HttpServletRequest request, HttpServletResponse response) {
+		int id = Integer.parseInt(request.getParameter("id"));
 		int aid = Integer.parseInt(request.getParameter("aid"));
-		String body = request.getParameter("body");
-		dao.insertReply(aid, body);
+		dao.deleteReplyById(id);
+
+		return "redirect: /board/article?action=detail&id=" + aid;
+	}
+
+	private String showReplyUpdate(HttpServletRequest request, HttpServletResponse response) {
+
+		int aid = Integer.parseInt(request.getParameter("aid"));
+		int id = Integer.parseInt(request.getParameter("id"));
+
+		return "redirect: /board/article?action=detail&id=" + aid + "&flag=u&rid=" + id;
+	}
+
+	private String insertReply(HttpServletRequest request, HttpServletResponse response) {
+		int aid = Integer.parseInt(request.getParameter("aid"));
+		String body = request.getParameter("rbody");
+		int mid = Integer.parseInt(request.getParameter("mid"));
+		dao.insertReply(aid, body, mid);
 
 		return "WEB-INF/jsp/detail.jsp";
 	}

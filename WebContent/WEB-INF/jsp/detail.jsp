@@ -13,44 +13,48 @@
 		번호 : ${detailData.id} <br> 제목 : ${detailData.title} <br> 내용
 		: ${detailData.body}
 	</div>
-	
+
 	<hr>
 	<h3>댓글 리스트</h3>
-	<br>
-	
-	<table border="1">
-		<tr>
-			<td>댓글 내용</td>
-			<td>댓글 작성자</td>
-			<td>작성일</td>
-		</tr>
-
-		<tr>
-			<c:forEach var="reply" items="${replyData}">
-				<td>${replyData.body}</td>
-				<td>${replyData.nickname}</td>
-				<td>${replyData.regDate}</td>
-			</c:forEach>
-		</tr>
-	</table>
-
-	<h3>댓글 등록하기</h3>
-	<form action="/board/article">
-		<input type="hidden" name="id" value="${reply.id}"> 
-		<input type="hidden" name="parentid" value="${article.id}"> 
-		내용 : <input type="text" name="reply" /><br> 
-		작성자 : ${loginedMember.nickname}<br>
-		<input type="submit" value="댓글 등록" />
-	</form>
-
-	<a href="/board/article?action=commentUpdate&id=${replyData.id}">댓글
-		수정</a>
-	<a href="/board/article?action=commentdelete&id=${replyData.id}">댓글
-		삭제</a>
+	<c:forEach var="reply" items="${replyData}">
+		<c:choose>
+			<c:when test="${flag != 'u' && rid == reply.id}">
+				작성자 : ${loginedMember.nickname} <br>
+				<form action="/board/article">
+					<input type="text" name="rbody" placeholder="${reply.body}"> 
+					<input type="text" name="rid" placeholder="${reply.id}"> 
+					<input type="hidden" name="aid" value="${detailData.id}"> 
+					<input type="hidden" name="action" value="doUpdateReply"> 
+					<input type="submit" value="댓글 등록" />
+				</form>
+			</c:when>
+			<c:otherwise>
+			${reply.body} <br>
+			${reply.nickname} <br>
+			${reply.regDate} <br>
+				<c:if test="${reply.mid == loginedMember.id}">
+					<a href="/board/article?action=showReplyUpdate&id=${reply.id}&aid=${detailDate.id}">댓글수정</a>
+					<a
+						href="/board/article?action=replydelete&id=${reply.id}&aid=${detailDate.id}">댓글삭제</a>
+				</c:if>
+			</c:otherwise>
+		</c:choose>
+	</c:forEach>
 
 	<hr>
 
+	작성자 : ${loginedMember.nickname}
+	<br>
+	<form action="/board/article">
+		<input type="text" name="rbody" placeholder="댓글을 남겨보세요."> <input
+			type="hidden" name="aid" value="${detailData.id}"> <input
+			type="hidden" name="mid" value="${loginedMember.id}"> <input
+			type="hidden" name="action" value="doInsertReply"> <input
+			type="submit" value="댓글 등록" />
+	</form>
 
+	<hr>
+	<!-- 
 	<c:choose>
 		<c:when test="${loginedMember.id == detailData.id}">
 			<a href="/board/article?action=showUpdate&id=${detailData.id}">게시물
@@ -60,7 +64,7 @@
 		<c:otherwise>
 		</c:otherwise>
 	</c:choose>
-
+ -->
 
 </body>
 </html>
