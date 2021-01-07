@@ -18,7 +18,7 @@
 	<h3>댓글 리스트</h3>
 	<c:forEach var="reply" items="${replyData}">
 		<c:choose>
-			<c:when test="${flag != 'u' && rid == reply.id}">
+			<c:when test="${flag == 'u' && rid == reply.id}">
 				작성자 : ${loginedMember.nickname} <br>
 				<form action="/board/article">
 					<input type="text" name="rbody" placeholder="${reply.body}"> 
@@ -29,13 +29,13 @@
 				</form>
 			</c:when>
 			<c:otherwise>
-			${reply.body} <br>
 			${reply.nickname} <br>
+			${reply.body} <br>
 			${reply.regDate} <br>
 				<c:if test="${reply.mid == loginedMember.id}">
 					<a href="/board/article?action=showReplyUpdate&id=${reply.id}&aid=${detailDate.id}">댓글수정</a>
 					<a
-						href="/board/article?action=replydelete&id=${reply.id}&aid=${detailDate.id}">댓글삭제</a>
+						href="/board/article?action=doDeleteReply&id=${reply.id}&aid=${detailDate.id}">댓글삭제</a>
 				</c:if>
 			</c:otherwise>
 		</c:choose>

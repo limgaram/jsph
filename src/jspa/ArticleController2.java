@@ -18,6 +18,7 @@ public class ArticleController2 {
 		String dest = "";
 
 		if (action.equals("list")) {
+
 			dest = list(request, response);
 
 		} else if (action.equals("insert")) {
@@ -54,10 +55,14 @@ public class ArticleController2 {
 
 			dest = showReplyUpdate(request, response);
 
-		} else if (action.equals("replyDelete")) {
-			dest = replyDelete(request, response);
+		} else if (action.equals("doDeleteReply")) {
+			
+			dest = deleteReply(request, response);
+			
 		} else if (action.equals("doUpdateReply")) {
+			
 			dest = updateReply(request, response);
+			
 		}
 		return dest;
 	}
@@ -136,7 +141,8 @@ public class ArticleController2 {
 		return "redirect: /board/article?action=detail&id=" + aid;
 	}
 
-	private String replyDelete(HttpServletRequest request, HttpServletResponse response) {
+	private String deleteReply(HttpServletRequest request, HttpServletResponse response) {
+		
 		int id = Integer.parseInt(request.getParameter("id"));
 		int aid = Integer.parseInt(request.getParameter("aid"));
 		dao.deleteReplyById(id);
@@ -153,11 +159,13 @@ public class ArticleController2 {
 	}
 
 	private String insertReply(HttpServletRequest request, HttpServletResponse response) {
+		
 		int aid = Integer.parseInt(request.getParameter("aid"));
-		String body = request.getParameter("rbody");
 		int mid = Integer.parseInt(request.getParameter("mid"));
+		String body = request.getParameter("rbody");
+		
 		dao.insertReply(aid, body, mid);
 
-		return "WEB-INF/jsp/detail.jsp";
+		return "redirect: /board/article?action=detail&id=" + aid;
 	}
 }
