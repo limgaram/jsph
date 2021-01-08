@@ -4,10 +4,14 @@ import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
+import board.Pagination;
 import board.article.Article;
 import board.article.ArticleDao;
+import board.article.Like;
 import board.article.Reply;
+import board.member.Member;
 
 public class ArticleController2 {
 	ArticleDao dao = new ArticleDao();
@@ -45,6 +49,8 @@ public class ArticleController2 {
 
 			dest = showUpdate(request, response);
 
+		} else if (action.equals("doSearch")) {
+			dest = doSearch(request, response);
 		}
 //		reply
 		else if (action.equals("doInsertReply")) {
@@ -56,13 +62,17 @@ public class ArticleController2 {
 			dest = showReplyUpdate(request, response);
 
 		} else if (action.equals("doDeleteReply")) {
-			
+
 			dest = deleteReply(request, response);
-			
+
 		} else if (action.equals("doUpdateReply")) {
-			
+
 			dest = updateReply(request, response);
-			
+
+		} else if (action.equals("doLikeCheck")) {
+
+			dest = doLikeCheck(request, response);
+
 		}
 		return dest;
 	}
@@ -124,8 +134,17 @@ public class ArticleController2 {
 	}
 
 	public String list(HttpServletRequest request, HttpServletResponse response) {
+
 		ArrayList<Article> articles = dao.getArticles();
-		request.setAttribute("myData", articles);
+		Pagination pagination = new Pagination(articles.size());
+		int pageNo = Integer.parseInt(request.getParameter("pageNo"));
+		pagination.setCurrentPageNo(pageNo);
+		pagination.setCurrentPageBlockNo(pageNo);
+
+		ArrayList<Article> articlesPerPage = dao.getArticlesForPaging(pagination);
+
+		request.setAttribute("myData", articlesPerPage);
+		request.setAttribute("pagination", pagination);
 
 		return "WEB-INF/jsp/list.jsp";
 	}
@@ -142,7 +161,7 @@ public class ArticleController2 {
 	}
 
 	private String deleteReply(HttpServletRequest request, HttpServletResponse response) {
-		
+
 		int id = Integer.parseInt(request.getParameter("id"));
 		int aid = Integer.parseInt(request.getParameter("aid"));
 		dao.deleteReplyById(id);
@@ -159,13 +178,43 @@ public class ArticleController2 {
 	}
 
 	private String insertReply(HttpServletRequest request, HttpServletResponse response) {
-		
+
 		int aid = Integer.parseInt(request.getParameter("aid"));
 		int mid = Integer.parseInt(request.getParameter("mid"));
 		String body = request.getParameter("rbody");
-		
+
 		dao.insertReply(aid, body, mid);
 
 		return "redirect: /board/article?action=detail&id=" + aid;
 	}
+
+	private String doSearch(HttpServletRequest request, HttpServletResponse response) {
+
+		String dateInterval = request.getParameter("dateInterval");
+		String sTarget = request.getParameter("sTarget");
+		String keyword = request.getParameter("keyword");
+
+		ArrayList<Article> searchedArticles = dao.searchArticle(dateInterval, sTarget, keyword);
+		request.setAttribute("myData", searchedArticles);
+
+		return "WEB-INF/jsp/list.jsp";
+	}
+
+	private String doLikeCheck(HttpServletRequest request, HttpServletResponse response) {
+
+		int aid = Integer.parseInt(request.getParameter("id"));
+		HttpSession session = request.getSession();
+		int mid = ((Member) session.getAttribute("loginedMember")).getId();
+
+		Like like = dao.getLike(aid, mid);
+
+		if (like == null) {
+			dao.insertLike(aid, mid);
+		} else {
+			dao.deleteLike(aid, mid);
+		}
+
+		return "redirect: /board/article?action=detail&id=" + aid;
+	}
+
 }

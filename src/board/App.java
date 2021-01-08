@@ -18,9 +18,9 @@ public class App {
 	private Scanner sc = new Scanner(System.in);
 	private Member loginedMember = null;
 	private String cmd = "";
-	private List<Article> currentArticles = null; 
+	private List<Article> currentArticles = null;
 	private Pagination currentPagination = null;
-	
+
 	public void start() {
 		currentArticles = articleDao.getArticles();
 		currentPagination = new Pagination(currentArticles.size());
@@ -65,21 +65,21 @@ public class App {
 			System.out.println("페이징 명령어를 입력해주세요 (prev : 이전, next : 다음, go : 선택, back : 뒤로가기) :");
 			String pageCmd = sc.nextLine();
 			if (pageCmd.equals("prev")) {
-				if(currentPageNo < 1) {
+				if (currentPageNo < 1) {
 					System.out.println("시작페이지입니다.");
 					continue;
 				}
 				currentPagination.setCurrentPageNo(currentPageNo - 1);
 			} else if (pageCmd.equals("next")) {
-				if(currentPageNo > lastPageNo) {
+				if (currentPageNo > lastPageNo) {
 					System.out.println("마지막페이지입니다.");
 					continue;
 				}
 				currentPagination.setCurrentPageNo(currentPageNo + 1);
 			} else if (pageCmd.equals("go")) {
 				System.out.print("이동하실 페이지 번호를 입력해주세요 :");
-				int selectedPageNo = Integer.parseInt(sc.nextLine()); 
-				if(selectedPageNo < 1 || selectedPageNo > lastPageNo) {
+				int selectedPageNo = Integer.parseInt(sc.nextLine());
+				if (selectedPageNo < 1 || selectedPageNo > lastPageNo) {
 					System.out.println("잘못된 페이지입니다.");
 					continue;
 				}

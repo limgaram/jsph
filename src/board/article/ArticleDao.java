@@ -125,4 +125,29 @@ public class ArticleDao {
 		db.updateQuery(sql, body, id);
 
 	}
+
+	public ArrayList<Article> searchArticle(String dateInterval, String sTarget, String keyword) {
+
+		String sql = "SELECT * FROM article a INNER JOIN `MEMBER` m ON a.mid = m.id WHERE ";
+
+		String dateStr = "a.regDate > DATE_ADD(NOW(), INTERVAL " + dateInterval + ") AND ";
+		if (dateInterval.equals("all")) {
+			dateStr = "";
+		}
+		sql += dateStr;
+
+		String[] targets = sTarget.split("&");
+		sql += "(";
+		for (int i = 0; i < targets.length; i++) {
+			sql += targets[i] + " LIKE CONCAT_WS('" + keyword + "', '%', '%')";
+			if (i == targets.length - 1) {
+				sql += ")";
+				break;
+			}
+			sql += " OR ";
+		}
+
+		System.out.println(sql);
+		return db.getRows(sql, new ArticleRowMapper());
+	}
 }

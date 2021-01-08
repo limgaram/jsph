@@ -32,9 +32,22 @@ public class MemberController2 {
 		} else if (action.equals("doInsertMember")) {
 
 			dest = doInsertMember(request, response);
+
+		} else if (action.equals("doLogout")) {
+
+			dest = doLogout(request, response);
+
 		}
 		return dest;
 
+	}
+
+	private String doLogout(HttpServletRequest request, HttpServletResponse response) {
+
+		HttpSession session = request.getSession();
+		session.invalidate();
+
+		return "redirect: /board/article?action=list";
 	}
 
 	private String doLogin(HttpServletRequest request, HttpServletResponse response) {

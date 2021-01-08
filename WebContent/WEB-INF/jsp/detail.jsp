@@ -8,11 +8,22 @@
 <title>Insert title here</title>
 </head>
 <body>
+	<c:if test="${loginedMember != null}">
+	${loginedMember.nickname}님 반갑습니다!
+    </c:if>
+	
+	<a href="/board/member?action=doLogout">로그아웃</a>
+	
+	
 	<h1>게시물 상세보기</h1>
+	
 	<div style="background-color: skyblue; width: 250px; height: 100px;">
 		번호 : ${detailData.id} <br> 제목 : ${detailData.title} <br> 내용
 		: ${detailData.body}
 	</div>
+
+	<a href="/board/article?action=doLikeCheck&id=${updateData.id}">좋아요</a>
+	${updateData.likeCnt}
 
 	<hr>
 	<h3>댓글 리스트</h3>
@@ -21,11 +32,11 @@
 			<c:when test="${flag == 'u' && rid == reply.id}">
 				작성자 : ${loginedMember.nickname} <br>
 				<form action="/board/article">
-					<input type="text" name="rbody" placeholder="${reply.body}"> 
-					<input type="text" name="rid" placeholder="${reply.id}"> 
-					<input type="hidden" name="aid" value="${detailData.id}"> 
-					<input type="hidden" name="action" value="doUpdateReply"> 
-					<input type="submit" value="댓글 등록" />
+					<input type="text" name="rbody" placeholder="${reply.body}">
+					<input type="text" name="rid" placeholder="${reply.id}"> <input
+						type="hidden" name="aid" value="${detailData.id}"> <input
+						type="hidden" name="action" value="doUpdateReply"> <input
+						type="submit" value="댓글 등록" />
 				</form>
 			</c:when>
 			<c:otherwise>
@@ -33,7 +44,8 @@
 			${reply.body} <br>
 			${reply.regDate} <br>
 				<c:if test="${reply.mid == loginedMember.id}">
-					<a href="/board/article?action=showReplyUpdate&id=${reply.id}&aid=${detailDate.id}">댓글수정</a>
+					<a
+						href="/board/article?action=showReplyUpdate&id=${reply.id}&aid=${detailDate.id}">댓글수정</a>
 					<a
 						href="/board/article?action=doDeleteReply&id=${reply.id}&aid=${detailDate.id}">댓글삭제</a>
 				</c:if>
@@ -52,8 +64,8 @@
 			type="hidden" name="action" value="doInsertReply"> <input
 			type="submit" value="댓글 등록" />
 	</form>
-
 	<hr>
+
 	<!-- 
 	<c:choose>
 		<c:when test="${loginedMember.id == detailData.id}">

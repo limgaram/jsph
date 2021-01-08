@@ -15,7 +15,8 @@
 
 	<c:if test="${loginedMember != null}">
 	${loginedMember.nickname}님 반갑습니다!
-    </c:if>
+	<a href="/board/member?action=doLogout">로그아웃</a>
+	</c:if>
 	<c:if test="${loginedMember == null}">
 		<a href="/board/member?action=showLogin">로그인</a>
 		<a href="/board/member?action=showMember">회원가입</a>
@@ -48,9 +49,8 @@
 				<td>${article.hit}</td>
 			</tr>
 		</c:forEach>
-
-
 	</table>
+
 	<c:choose>
 		<c:when test="${loginedMember != null}">
 			<a href="/board/article?action=showAdd">글쓰기</a>
@@ -58,9 +58,42 @@
 		<c:otherwise>
 		</c:otherwise>
 	</c:choose>
-	
-	검색
-	
+
+	<hr>
+	<c:if test="${pagination.currentPageBlockNo != 1}">
+		<a
+			href="/board/article?action=list&pageNo=${pagination.startPageNoInCurrentBlock - 1}">이전</a>
+	</c:if>
+	<c:forEach begin="${pagination.startPageNoInCurrentBlock}"
+		end="${pagination.endPageNoInCurrentBlock}" var="i">
+		<a href="/board/article?action=list&pageNo=${i}">${i}</a>
+	</c:forEach>
+	<c:if test="${pagination.currentPageBlockNo == pagination.lastPageNo}">
+		<a
+			href="/board/article?action=list&pageNo=${pagination.endPageNoInCurrentBlock + 1}">다음</a>
+	</c:if>
+
+	<hr>
+
+
+	<form action="/board/article">
+		<select name="dateInterval">
+			<option value="all">전체기간</option>
+			<option value="-1 day">1일</option>
+			<option value="-1 week">1주</option>
+			<option value="-1 month">1개월</option>
+			<option value="-6 month">6개월</option>
+			<option value="-1 year">1년</option>
+		</select> <select name="sTarget">
+			<option value="title&body">제목+내용</option>
+			<option value="title">제목만</option>
+			<option value="nickname">글작성자</option>
+			<option value="rbody">댓글내용</option>
+			<option value="rnickname">댓글작성자</option>
+		</select> <input type="text" name="keyword" /> <input type="hidden"
+			name="action" value="doSearch" /> <input type="submit" value="검색" />
+	</form>
+
 
 
 </body>
